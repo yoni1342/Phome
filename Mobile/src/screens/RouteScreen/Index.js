@@ -2,17 +2,29 @@ import { useEffect } from 'react'
 import { View, Text } from 'react-native'
 import React from 'react'
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CommonActions } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-
-const Index = ({navigation}) => {
+const Index = () => {
+    const navigation = useNavigation();
     useEffect(() => {
         const checkUser = async () => {
           const user = await AsyncStorage.getItem("token");
           if (user) {
-            navigation.navigate("DashBoard");
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'DashBoard' }],
+              })
+            );
           }
           else{
-            navigator.navigate("IntroScreen");
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'Signin' }],
+              })
+            );
           }
         };
         checkUser();

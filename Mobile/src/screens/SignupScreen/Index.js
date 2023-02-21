@@ -23,6 +23,7 @@ const Index = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
+  const [error, setError] = useState("");
 
   const handleSignup = () => {
     if (password !== confirmPassword) {
@@ -50,7 +51,7 @@ const Index = () => {
         );
       })
       .catch((err) => {
-        console.log(err);
+        setError(err?.response?.data?.message);
       });
   };
 
@@ -63,6 +64,11 @@ const Index = () => {
 
           <View className="flex items-center space-y-10">
             <Text className="text-5xl font-bold">Sign Up</Text>
+            {error && (
+              <View className="bg-red-400 px-2 py-1 rounded-md">
+                <Text className="text-white">{error}</Text>
+              </View>
+            )}
 
             <View className="flex items-center w-full space-y-5">
               {/* Firstname Input */}

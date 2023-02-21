@@ -11,12 +11,15 @@ import React from "react";
 import images from "../../../assets/imageassets";
 import { useState } from "react";
 import { axios } from "../../utils/axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CommonActions } from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CommonActions } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
-const Index = ({ navigation }) => {
+const Index = () => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handelSignin = () => {
     const data = {
@@ -29,17 +32,16 @@ const Index = ({ navigation }) => {
         headers: { "Content-Type": "application/json" },
       })
       .then((res) => {
-        console.log(res.data.token);
         AsyncStorage.setItem("token", res.data.token);
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: 'DashBoard' }],
+            routes: [{ name: "DashBoard" }],
           })
         );
       })
       .catch((err) => {
-        console.log(err.message);
+        setError(err?.response?.data?.message);
       });
   };
 
@@ -52,6 +54,11 @@ const Index = ({ navigation }) => {
           <View className="flex items-center space-y-10">
             <Text className="text-5xl font-bold">Login</Text>
 
+            {error && (
+              <View className="bg-red-400 px-2 py-1 rounded-md">
+                <Text className="text-white">{error}</Text>
+              </View>
+            )}
             <View className="flex items-center w-full space-y-5">
               {/* Email addrase input */}
               <TextInput
