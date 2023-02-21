@@ -3,6 +3,7 @@ require("dotenv").config()
 const color = require("colors")
 const {connect_db} = require('./config/db')
 const authRouter = require('./routes/auth')
+const roomRouter = require('./routes/room')
 const cors = require('cors')
 
 const app = express()
@@ -11,6 +12,7 @@ app.use(cors());
 
 app.use(express.json())
 app.use('/api/auth',authRouter)
+app.use('/api/room',roomRouter)
 
 
 app.use((err, req, res, next)=>{

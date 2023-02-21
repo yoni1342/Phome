@@ -1,5 +1,5 @@
 const express =  require("express");
-const {signup, signin,confirmation} = require("../controllers/auth.js");
+const {signup, signin,confirmation,resendPin} = require("../controllers/auth.js");
 const {lightController} = require('../controllers/light')
 const router = express.Router()
 
@@ -9,6 +9,10 @@ router.post('/signup', signup)
 router.post('/signin', signin)
 // confirm code route
 router.post('/confirmCode/:userId', confirmation)
+
+// resend code
+router.post('/resendCode/:userId', resendPin)
+
 // smart light route
 router.post('/smartLight', (req, res) => {
     console.log(req.body)

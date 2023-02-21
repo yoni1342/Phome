@@ -109,4 +109,30 @@ module.exports = {
       next(err);
     }
   },
+
+  resendPin: async (req, res, next) => {
+    // update the existing verifcation document
+    try {
+      // identify the user
+      const user = await User.findById(req.params.userId)
+      if(!user) return next(createError(400, "User Not Found"))
+      // create a new pin
+      const pin = PINGenerator();
+      // update the pin
+      const verification = await Verification.find({userId: req.params.userId})
+      if(!verification) return next(createError(400, "User Not Found"))
+      await Verification.findByIdAndUpdate(verification[0]._id, {pin})
+      // send Verification Email
+      transporter.sendMail({
+        from: "yonatantesfaye30@gmail.com",
+        to: user.email,
+        subject: "Verifiy yor email",
+        html: `Your Verification code is ${pin}`,
+      });
+      res.status(200).json({message: "Pin Sent"})
+    } catch (err) {
+      console.log(err)
+    }
+  },
+    
 };

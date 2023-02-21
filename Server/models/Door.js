@@ -1,19 +1,19 @@
 const mongoose = require('mongoose');
 
-const RoomSchema = new mongoose.Schema({
+const DoorSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
     },
-    doors: [{
+    status: {
+        type: Boolean,
+        required: true,
+    },
+    room: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Door',
-    }],
-    
-    devices: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Device',
-    }],
+        ref: 'Room',
+        required: true,
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -21,4 +21,4 @@ const RoomSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('Room', RoomSchema);
+module.exports = mongoose.model('Door', DoorSchema);

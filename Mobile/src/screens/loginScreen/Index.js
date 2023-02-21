@@ -33,6 +33,12 @@ const Index = () => {
       })
       .then((res) => {
         AsyncStorage.setItem("token", res.data.token);
+        AsyncStorage.setItem("user", JSON.stringify({
+          id: res.data.id,
+          firstname: res.data.firstname,
+          lastname: res.data.lastname,
+          email: res.data.email,
+        }));
         navigation.dispatch(
           CommonActions.reset({
             index: 0,

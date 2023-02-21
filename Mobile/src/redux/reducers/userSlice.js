@@ -1,66 +1,52 @@
-import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { setAuthToken, removeAuthToken } from '../utils/auth';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { axios } from "../../utils/axios";
 
 const initialState = {
-  isLoggedIn: false,
   user: null,
-  token: null,
-  error: null,
+  isLogged: false,
+  verificationPending: false,
 };
 
-export const userSlice = createSlice({
-  name: 'user',
-  initialState,
-  reducers: {
-    loginSuccess: (state, action) => {
-      state.isLoggedIn = true;
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.error = null;
-    },
-    loginFailure: (state, action) => {
-      state.isLoggedIn = false;
-      state.user = null;
-      state.token = null;
-      state.error = action.payload;
-    },
-    logoutSuccess: (state) => {
-      state.isLoggedIn = false;
-      state.user = null;
-      state.token = null;
-      state.error = null;
-    },
-  },
-});
-
-export const { loginSuccess, loginFailure, logoutSuccess } = userSlice.actions;
-
-export const selectIsLoggedIn = (state) => state.user.isLoggedIn;
-export const selectUser = (state) => state.user.user;
-export const selectToken = (state) => state.user.token;
-export const selectError = (state) => state.user.error;
-
-export const login = (email, password) => async (dispatch) => {
-  try {
-    const response = await axios.post('/api/auth/login', { email, password });
-    const { user, token } = response.data;
-    setAuthToken(token);
-    dispatch(loginSuccess({ user, token }));
-  } catch (error) {
-    dispatch(loginFailure(error.message));
+export const signupUser = createAsyncThunk(
+  "user/signup",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("auth/signup", userData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
-};
+);
 
-export const logout = () => async (dispatch) => {
-  try {
-    removeAuthToken();
-    dispatch(logoutSuccess());
-  } catch (error) {
-    console.log(error);
+export const signinUser = createAsyncThunk(
+  "user/signin",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("auth/signin", userData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
-};
+);
 
-const userReducer = userSlice.reducer;
-
-export default userReducer;
+export const verifyUser = createAsyncThunk(
+  "user/verify",
+  async (token, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`auth/confirmCode/${token}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
