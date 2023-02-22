@@ -39,6 +39,10 @@ module.exports = {
       const newVerification = new Verification({ pin, userId: newUser._id });
       await newVerification.save();
       
+      const token = jwt.sign(
+        { id: newUser._id},
+        process.env.JWT
+      );
 
       const { password, ...others } = newUser._doc;
       // send Verification Email
@@ -49,7 +53,7 @@ module.exports = {
         html: `Your Verification code is ${pin}`,
       });
 
-      return res.status(200).json({ message: others });
+      return res.status(200).json({ message: {...others, token} });
     } catch (err) {
       next(err);
     }
@@ -96,13 +100,17 @@ module.exports = {
 
     try {
       const code  = await req.body.pin
-      const verified = await Verification.find({userId: req.params.userId})
+      token = req.params.token
+      const decoded = jwt.verify(token, process.env.JWT)
+      const userId = decoded.id
+      console.log(decoded)
+      const verified = await Verification.find({userId: userId})
       if(!verified) return next(createError(400, "User Not Found"))
       
       if(verified[0].pin !== code) return next(createError(400, "Wrong Pin"))
 
       await Verification.findByIdAndDelete(verified[0]._id)
-      await User.findByIdAndUpdate(req.params.userId, {verified: true})
+      await User.findByIdAndUpdate(userId, {verified: true})
       res.status(200).json({message: "User Verified"})
 
     } catch (err) {
@@ -113,13 +121,18 @@ module.exports = {
   resendPin: async (req, res, next) => {
     // update the existing verifcation document
     try {
+      // decode the token
+      const token = req.params.token
+      const decoded = jwt.verify(token, process.env.JWT)
+      // get the user id
+      const userId = decoded.id
       // identify the user
-      const user = await User.findById(req.params.userId)
+      const user = await User.findById(userId)
       if(!user) return next(createError(400, "User Not Found"))
       // create a new pin
       const pin = PINGenerator();
       // update the pin
-      const verification = await Verification.find({userId: req.params.userId})
+      const verification = await Verification.find({userId:userId})
       if(!verification) return next(createError(400, "User Not Found"))
       await Verification.findByIdAndUpdate(verification[0]._id, {pin})
       // send Verification Email

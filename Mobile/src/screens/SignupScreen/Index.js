@@ -13,8 +13,10 @@ import images from "../../../assets/imageassets";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { axios } from "../../utils/axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CommonActions } from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CommonActions } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { signupUser } from "../../redux/reducers/userSlice";
 
 const Index = () => {
   const navigation = useNavigation();
@@ -24,35 +26,36 @@ const Index = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (password !== confirmPassword) {
       alert("Passwords do not match");
       return;
     }
-    const data = {
-      firstname,
-      lastname,
-      email,
-      password,
-    };
-
-    axios
-      .post("auth/signup", JSON.stringify(data), {
-        headers: { "Content-Type": "application/json" },
-      })
-      .then((res) => {
-        AsyncStorage.setItem("id", res.data.message._id);
+    try {
+      const data = {
+        firstname,
+        lastname,
+        email,
+        password,
+      };
+      const response = await dispatch(signupUser(data));
+      // console.log(response.payload.err.message)
+      if (response?.payload?.err) {
+        setError(response.payload.err.message);
+      } else {
+        console.log("Nice");
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: 'Verification' }],
+            routes: [{ name: "Verification" }],
           })
         );
-      })
-      .catch((err) => {
-        setError(err?.response?.data?.message);
-      });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

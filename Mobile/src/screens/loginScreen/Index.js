@@ -14,41 +14,31 @@ import { axios } from "../../utils/axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-
+import { useDispatch, useSelector } from "react-redux";
+import {  signinUser } from "../../redux/reducers/userSlice";
 const Index = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handelSignin = () => {
+  const handelSignin = async () => {
     const data = {
       email,
       password,
     };
-
-    axios
-      .post("auth/signin", data, {
-        headers: { "Content-Type": "application/json" },
-      })
-      .then((res) => {
-        AsyncStorage.setItem("token", res.data.token);
-        AsyncStorage.setItem("user", JSON.stringify({
-          id: res.data.id,
-          firstname: res.data.firstname,
-          lastname: res.data.lastname,
-          email: res.data.email,
-        }));
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: "DashBoard" }],
-          })
-        );
-      })
-      .catch((err) => {
-        setError(err?.response?.data?.message);
-      });
+    const response = await dispatch(signinUser(data));
+    if (response?.payload?.err) {
+      setError(response.payload.err.message);
+    } else {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "DashBoard" }],
+        })
+      );
+    }
   };
 
   return (

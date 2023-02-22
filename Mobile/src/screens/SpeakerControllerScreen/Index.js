@@ -75,13 +75,6 @@ const Index = ({navigation}) => {
                 className="w-10 h-10"
               />
             </View>
-            <Switch
-              trackColor={{ false: "gray", true: "black" }}
-              // thumbColor={isEnable? 'white':'white'}
-              ios_backgroundColor="gray"
-              onValueChange={toggleSwitch}
-              value={isEnable}
-            />
           </View>
         </View>
       </ScrollView>

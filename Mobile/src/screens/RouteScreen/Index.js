@@ -4,8 +4,11 @@ import React from 'react'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch,useSelector } from 'react-redux';
+import {userSlice} from '../../redux/reducers/userSlice'
 
 const Index = () => {
+
     const navigation = useNavigation();
     useEffect(() => {
         const checkUser = async () => {

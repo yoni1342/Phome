@@ -8,10 +8,10 @@ router.post('/signup', signup)
 // Sign in
 router.post('/signin', signin)
 // confirm code route
-router.post('/confirmCode/:userId', confirmation)
+router.post('/confirmCode/:token', confirmation)
 
 // resend code
-router.post('/resendCode/:userId', resendPin)
+router.post('/resendCode/:token', resendPin)
 
 // smart light route
 router.post('/smartLight', (req, res) => {

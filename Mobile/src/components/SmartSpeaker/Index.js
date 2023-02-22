@@ -28,13 +28,6 @@ const Index = () => {
             <Icon name="caretright" size={28} color="black" className='w-10 h-10' />
             <Icon name="stepforward" size={28} color="black" className='w-10 h-10' />
           </View>
-          <Switch 
-            trackColor={{false: 'gray', true:'black'}}
-            // thumbColor={isEnable? 'white':'white'}
-            ios_backgroundColor='gray'
-            onValueChange={toggleSwitch}
-            value={isEnable}
-            />
         </View> 
         <Text className ="text-lg font-bold py-3">Smart Speaker</Text>
       </View>

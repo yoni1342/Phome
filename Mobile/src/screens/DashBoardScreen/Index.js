@@ -9,13 +9,10 @@ import {
 import React, { useEffect, useState } from "react";
 import images from "../../../assets/imageassets";
 import Room from "../../components/Room/Index";
-import Light from "../../components/SmartLight/Index";
-import Speaker from "../../components/SmartSpeaker/Index";
-import TV from "../../components/SmartTv/Index";
-import Door from "../../components/SmartDoor/Index";
 import { CommonActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LivingRoom from "../../components/LivingRoom/Index"
 
 const Index = () => {
   const navigation = useNavigation();
@@ -68,39 +65,16 @@ const Index = () => {
 
           {/* Rooms */}
           <ScrollView horizontal={true} className="flex flex-row space-x-3">
-            <Room icon={"couch"} name="Living Room" key={1} />
+            <TouchableOpacity>
+              <Room icon={"couch"} name="Living Room" active={true} key={1} />
+            </TouchableOpacity>
           </ScrollView>
         </View>
 
         {/* Devices */}
         <View className="px-2 my-2">
           <Text className="text-2xl font-bold">Devices </Text>
-          <View className="flex flex-row ">
-            <View className="w-[50%]">
-              <TouchableOpacity
-                onPress={() => navigation.navigate("LightController")}
-              >
-                <Light />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("TVController")}
-              >
-                <TV />
-              </TouchableOpacity>
-            </View>
-            <View className="w-[50%]">
-              <TouchableOpacity
-                onPress={() => navigation.navigate("SpeakerController")}
-              >
-                <Speaker />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("DoorController")}
-              >
-                <Door />
-              </TouchableOpacity>
-            </View>
-          </View>
+          <LivingRoom />
         </View>
       </ScrollView>
     </SafeAreaView>

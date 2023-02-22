@@ -3,18 +3,39 @@ import { CreateSlice } from "@reduxjs/toolkit";
 export const doorSlice = CreateSlice({
     name: "door",
     initialState: {
-        status: false,
+        frontDoor: true,
+        backDoor: true,
+        kitchenDoor: true,
+        BedDoor: true,
     },
     reducers: {
-        openDoor: (state) => {
-            state.status = true;
+        openFrontDoor: (state) => {
+            state.frontDoor = true;
         },
-
-        closeDoor: (state) => {
-            state.status = false;
+        openBackDoor: (state) => {
+            state.backDoor = true;
+        },
+        openKitchenDoor: (state) => {
+            state.kitchenDoor = true
+        },
+        openBedDoor: (state) => {
+            state.BedDoor = true
+        },
+        closeFrontDoor: state=>{
+            state.frontDoor = false
+        },
+        closeBackDoor: state=>{
+            state.backDoor = false
+        },
+        closeKitchenDoor: state=>{
+            state.kitchenDoor = false
+        },
+        closeBedDoor: state=>{
+            state.BedDoor = false
         }
+
     }
 });
 
-export const { openDoor } = doorSlice.actions;
+export const { openFrontDoor, openBackDoor, openKitchenDoor, openBedDoor, closeFrontDoor, closeBackDoor, closeKitchenDoor, closeBedDoor } = doorSlice.actions;
 export default doorSlice.reducer;
