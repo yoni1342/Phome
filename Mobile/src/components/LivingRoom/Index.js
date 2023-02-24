@@ -27,9 +27,9 @@ const Index = () => {
       </View>
       <View className="w-[50%]">
         <TouchableOpacity
-          onPress={() => navigation.navigate("SpeakerController")}
+          onPress={() => navigation.navigate("TermoController")}
         >
-          <Speaker />
+          <Termo />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("DoorController")}>
           <Door />

@@ -10,6 +10,9 @@ import images from "../../../assets/imageassets";
 import Icon from "react-native-vector-icons/Ionicons";
 import Door from "../../components/Door/Index";
 import DoorData from "../../data/DoorData";
+import { useDispatch, useSelector } from "react-redux";
+// import { } from "../../redux/reducers/doorSlice";
+
 
 const Index = ({navigation}) => {
   const [doors, setDoors] = useState([{}]);
@@ -19,6 +22,7 @@ const Index = ({navigation}) => {
   }, []);
   const handleChange = (door) => {
     door.status = !door.status;
+    setDoors([...doors]);
   };
   return (
     <SafeAreaView className="h-full">

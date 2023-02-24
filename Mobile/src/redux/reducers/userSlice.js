@@ -64,7 +64,7 @@ export const verifyUser = createAsyncThunk(
 //resend
 export const resendCode = createAsyncThunk(
   "user/resend",
-  async (token, { rejectWithValue }) => {
+  async ({token}, { rejectWithValue }) => {
     try {
       const response = await axios.post(
         `auth/resendCode/${token}`,
@@ -87,7 +87,6 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      state.user = null;
       state.isLogged = false;
     },
   },

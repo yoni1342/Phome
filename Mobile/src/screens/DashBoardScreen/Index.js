@@ -12,35 +12,24 @@ import Room from "../../components/Room/Index";
 import { CommonActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import LivingRoom from "../../components/LivingRoom/Index"
-
+import LivingRoom from "../../components/LivingRoom/Index";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/reducers/userSlice";
 const Index = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [user, setUser] = useState({});
+  // const [user, setUser] = useState({});
 
-  useEffect(() => {
-    AsyncStorage.getItem("user")
-      .then((res) => {
-        setUser(JSON.parse(res));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
+  const user = useSelector((state) => state.user.user);
+  
   const handleSignOut = () => {
-    AsyncStorage.removeItem("token")
-      .then((res) => {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: "Signin" }],
-          })
-        );
+    dispatch(logout());
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Signin" }],
       })
-      .catch((err) => {
-        console.log(err);
-      });
+    );
   };
 
   return (

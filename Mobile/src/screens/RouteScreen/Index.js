@@ -1,23 +1,24 @@
 import { useEffect } from 'react'
 import { View, Text } from 'react-native'
 import React from 'react'
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch,useSelector } from 'react-redux';
 import {userSlice} from '../../redux/reducers/userSlice'
 
 const Index = () => {
-
+    const isLogged = useSelector(state => state.user.isLogged);
+    
     const navigation = useNavigation();
     useEffect(() => {
-        const checkUser = async () => {
-          const user = await AsyncStorage.getItem("token");
-          if (user) {
+      const checkUser = async () => {
+        
+          if (isLogged) {
             navigation.dispatch(
               CommonActions.reset({
                 index: 0,
-                routes: [{ name: 'DashBoard' }],
+                routes: [{ name: "DashBoard" }],
               })
             );
           }
@@ -25,7 +26,7 @@ const Index = () => {
             navigation.dispatch(
               CommonActions.reset({
                 index: 0,
-                routes: [{ name: 'Signin' }],
+                routes: [{ name: "Signin" }],
               })
             );
           }

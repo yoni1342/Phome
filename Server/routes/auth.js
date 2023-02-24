@@ -13,11 +13,5 @@ router.post('/confirmCode/:token', confirmation)
 // resend code
 router.post('/resendCode/:token', resendPin)
 
-// smart light route
-router.post('/smartLight', (req, res) => {
-    console.log(req.body)
-    res.send('ok')
-})
-
 
 module.exports = router

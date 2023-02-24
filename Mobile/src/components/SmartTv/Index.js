@@ -2,17 +2,22 @@ import { Text, View, Image, Switch } from 'react-native'
 import React, { Component, useState} from 'react'
 import Icon from 'react-native-vector-icons/AntDesign';
 import images from '../../../assets/imageassets'
-
+import { useDispatch,useSelector } from 'react-redux';
+import {changeStatus} from '../../redux/reducers/tvSlice'
 const Index = () => {
+  const dispatch = useDispatch();
+  const status = useSelector((state) => state.tv.status);
   const [isEnable, setIsEnable] = useState(true);
   const [brightness, setBrightness] = useState(20);
 
   const toggleSwitch = () => {
     if (isEnable){
       setBrightness(0)
+      dispatch(changeStatus())
     }
     else{
       setBrightness(20)
+      dispatch(changeStatus())
     }
     setIsEnable(previousState => !previousState);
   };

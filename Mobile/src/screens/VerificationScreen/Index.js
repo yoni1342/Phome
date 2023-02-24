@@ -32,7 +32,6 @@ const Index = () => {
       pin
     };
     const response = await dispatch(verifyUser(data));
-    console.log(response)
     if (response?.payload?.status == 400) {
       setError(response?.payload?.message);
     }
@@ -48,12 +47,12 @@ const Index = () => {
   
 
   const handleResend = async () => {
-    
+    const token = user.user.message.token
     const data = {
       token
     };
-    const response = await dispatch(resendCode(data));
-    console.log(response.payload)
+    dispatch(resendCode(data));
+    console.log(token)
     // AsyncStorage.getItem("user")
     //   .then((value) => {
     //     if (value !== null) {

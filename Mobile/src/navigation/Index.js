@@ -11,32 +11,26 @@ import DoorControllerScreen from "../screens/DoorScreen/Index";
 import TVControllerScreen from "../screens/TVControllerScreen/Index";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RouteScreen from "../screens/RouteScreen/Index";
+import TermoScreen from '../screens/TermoControllerScreen/Index';
+import { useSelector } from "react-redux";
 
 import { useEffect } from "react";
 
 const Stack = createNativeStackNavigator();
-
 const RootNavigator = () => {
-  useEffect(() => {
-    const checkUser = async () => {
-      const user = await AsyncStorage.getItem("token");
-      if (user) {
-        navigation.navigate("DashBoard");
-      }
-    };
-    checkUser();
-  }, []);
+  const isLogged = useSelector((state) => state.user.isLogged);
+  console.log(isLogged)
   return (
     // <NavigationContainer>
     //   {/* <Stack.Navigator initialRouteName="Intro"></Stack.Navigator> */}
-    <Stack.Navigator initialRouteName="Route">
+    <Stack.Navigator initialRouteName={isLogged?("DashBoard"):("Intro")}>
       <Stack.Screen
         name="Route"
         component={RouteScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Intro"
+        name="Intro"  
         component={IntroScreen}
         options={{ headerShown: false }}
       />
@@ -78,6 +72,11 @@ const RootNavigator = () => {
       <Stack.Screen
         name="TVController"
         component={TVControllerScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="TermoController"
+        component={TermoScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

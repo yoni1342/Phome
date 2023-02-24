@@ -103,7 +103,7 @@ module.exports = {
       token = req.params.token
       const decoded = jwt.verify(token, process.env.JWT)
       const userId = decoded.id
-      console.log(decoded)
+     
       const verified = await Verification.find({userId: userId})
       if(!verified) return next(createError(400, "User Not Found"))
       

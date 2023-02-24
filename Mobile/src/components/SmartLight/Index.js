@@ -2,25 +2,27 @@ import { Text, View, Image, Switch } from "react-native";
 import React, { Component, useState } from "react";
 import Icon from "react-native-vector-icons/Feather";
 import images from "../../../assets/imageassets";
-import {turnOff,turnOn} from '../../redux/reducers/lightReducer'
+import {turnOff,turnOn,setBrightness} from '../../redux/reducers/lightReducer'
 import { useDispatch, useSelector } from 'react-redux';
-import { connect } from 'react-redux';
 
 
-const Index = ({lightBrightness, turnOff, turnOn}) => {
+
+const Index = () => {
   const lightStatus = useSelector(state => state.light.status);
-  // const lightBrightness = useSelector(state => state.light.brightness);
+  const lightBrightness = useSelector(state => state.light.brightness);
   const dispatch = useDispatch();
 
-  const [isEnable, setIsEnable] = useState(true);
-  const [brightness, setBrightness] = useState(20);
+  const [isEnable, setIsEnable] = useState(lightStatus);
+  const [brightnessLevel, setBrightnessLevel] = useState(lightBrightness);
 
   const toggleSwitch = () => {
     if (isEnable) {
-      setBrightness(0);
+      dispatch(setBrightness(0));
+      setBrightnessLevel(0)
       dispatch(turnOff())
     } else {
-      setBrightness(lightBrightness);
+      dispatch(setBrightness(50));
+      setBrightnessLevel(50)
       dispatch(turnOn())
     }
     setIsEnable((previousState) => !previousState);
@@ -31,7 +33,7 @@ const Index = ({lightBrightness, turnOff, turnOn}) => {
         <View className='w-[50%]'>
           <View className="flex flex-row items-center">
             <Icon name="sun" size={28} color="black" className="w-10 h-10" />
-            <Text className="text-2xl font-light">{Math.round(brightness)}%</Text>
+            <Text className="text-2xl font-light">{Math.round(brightnessLevel)}%</Text>
           </View>
           <Switch
             trackColor={{ false: "gray", true: "black" }}
@@ -49,12 +51,4 @@ const Index = ({lightBrightness, turnOff, turnOn}) => {
   );
 };
 
-const mapStateToProps = (state)=>({
-  lightBrightness: state.light.brightness
-})
-
-const mapDispatchToProps = {
-  turnOff,
-  turnOn
-}
-export default connect(mapStateToProps,mapDispatchToProps)(Index);
+export default Index

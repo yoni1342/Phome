@@ -9,33 +9,21 @@ export const doorSlice = CreateSlice({
         BedDoor: true,
     },
     reducers: {
-        openFrontDoor: (state) => {
-            state.frontDoor = true;
+        changeFrontDoor:state=>{
+            state.frontDoor = !state.frontDoor
         },
-        openBackDoor: (state) => {
-            state.backDoor = true;
+        changeBackDoor:state=>{
+            state.backDoor = !state.backDoor
         },
-        openKitchenDoor: (state) => {
-            state.kitchenDoor = true
+        changeKitchenDoor:state=>{
+            state.kitchenDoor = !state.kitchenDoor
         },
-        openBedDoor: (state) => {
-            state.BedDoor = true
-        },
-        closeFrontDoor: state=>{
-            state.frontDoor = false
-        },
-        closeBackDoor: state=>{
-            state.backDoor = false
-        },
-        closeKitchenDoor: state=>{
-            state.kitchenDoor = false
-        },
-        closeBedDoor: state=>{
-            state.BedDoor = false
+        changeBedDoor:state=>{
+            state.BedDoor = !state.BedDoor
         }
 
     }
 });
 
-export const { openFrontDoor, openBackDoor, openKitchenDoor, openBedDoor, closeFrontDoor, closeBackDoor, closeKitchenDoor, closeBedDoor } = doorSlice.actions;
+export const {changeFrontDoor,changeBackDoor,changeKitchenDoor,changeBedDoor} = doorSlice.actions;
 export default doorSlice.reducer;
